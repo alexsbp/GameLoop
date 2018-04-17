@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.AnimationDrawable;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -32,7 +33,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         setFocusable(true);
 
         //instantiates a new player
-        player = new Player( bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icontrundle));
+        player = new Player( bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icontrundle), new Rect(100,100,100,100));
         //where the player should spawn, on the screen
         playerPoint = new Point(100,100);
 
@@ -97,9 +98,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     @Override
-    public void onDraw(Canvas canvas)
+    public void draw(Canvas canvas)
     {
-        super.onDraw(canvas);
+        super.draw(canvas);
         //fills the whole canvas(screen) with the color you specify
         canvas.drawColor(Color.WHITE);
         player.Draw(canvas);

@@ -1,25 +1,22 @@
 package com.example.bysted.gameloop;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 
-public class Player implements GameObject  {
+public class Player implements IDrawUpdate {
     private Rect rectangle;
     private int color;
     private Bitmap bitmap;
-    private float left, right;
 
     int width, height;
 
-    public Player (Bitmap bitmapplayer)
+    public Player (Bitmap bitmapplayer, Rect player)
     {
-        //this.rectangle = player;
+        this.rectangle = player;
         this.bitmap = bitmapplayer;
         this.color = color;
     }
@@ -28,14 +25,12 @@ public class Player implements GameObject  {
     public void Draw(Canvas canvas)
     {
         Paint paint = new Paint();
-        paint.setColor(color);
+        paint.setColor(Color.BLUE);
         //canvas.drawRect(rectangle, paint );
 
 
-        canvas.drawBitmap(bitmap, canvas.getWidth()/2, 0, paint);
+        canvas.drawBitmap(bitmap, 10, 10, paint);
 
-        /*bitmap.getHeight();
-        bitmap.getWidth();*/
 
     }
 
@@ -47,8 +42,7 @@ public class Player implements GameObject  {
 
     public void Update(Point point)
     {
-        rectangle.set(point.x - rectangle.width()/2,point.y - rectangle.height()/2, point.x + rectangle.width()/2, point.y + rectangle.height()/2 );
-        //bitmap.setPixel(point.x , point.y, Color.WHITE);
+        //rectangle.set(point.x - rectangle.width()/2,point.y - rectangle.height()/2, point.x + rectangle.width()/2, point.y + rectangle.height()/2 );
 
     }
 }
