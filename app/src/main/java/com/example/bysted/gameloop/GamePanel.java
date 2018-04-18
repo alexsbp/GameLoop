@@ -11,6 +11,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.Window;
 
 /**
  * Created by Bysted on 16-04-2018.
