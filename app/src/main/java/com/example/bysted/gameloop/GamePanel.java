@@ -6,12 +6,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.Rect;
-import android.graphics.drawable.AnimationDrawable;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.Window;
 
 /**
  * Created by Bysted on 16-04-2018.
@@ -21,7 +18,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 {
     private MainThread thread;
 
-    private Bitmap bitmap;
+    public Bitmap bitmap;
+
 
     private Player player;
     private Point playerPoint;
@@ -34,7 +32,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         setFocusable(true);
 
         //instantiates a new player
-        player = new Player( bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icontrundle), new Rect(100,100,100,100));
+        player = new Player( bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icontrundle)); //, new Rect(300,300,100,100)
         //where the player should spawn, on the screen
         playerPoint = new Point(100,100);
 

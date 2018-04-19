@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+
 public class MainActivity extends AppCompatActivity {
+
 
     AnimationDrawable rocketAnimation;
 
@@ -16,9 +18,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
     }
 
     public void StartAnimation(View v)
@@ -41,4 +40,6 @@ public class MainActivity extends AppCompatActivity {
             setContentView(new GamePanel(this));
             Intent intent = new Intent(this, GamePanel.class);
     }
+
+
 }
