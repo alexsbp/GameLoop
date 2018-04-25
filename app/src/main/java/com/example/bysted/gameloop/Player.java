@@ -1,5 +1,6 @@
 package com.example.bysted.gameloop;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,52 +12,100 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.MotionEvent;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 public class Player extends AppCompatActivity implements IDrawUpdate {
-    private Rect rectangle;
-    private int color;
-    private Bitmap bitmap, bit;
-    public Bitmap getBitmap() {return bitmap; }
-    public void setBitmap (Bitmap b) {bitmap = b; }
 
-    int width, height;
+    // the actual bitmap
+    private Bitmap bitmap;
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
+
+    //the x and y coordinate
+    private int x, y;
+    public int getX() {
+        return x;
+    }
+    public void setX(int x) {
+        this.x = x;
+    }
+    public int getY() {
+        return y;
+    }
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    // if droid is touched/picked up
+    private boolean touched;
+    public boolean isTouched() {
+        return touched;
+    }
+    public void setTouched(boolean touched) {
+        this.touched = touched;
+    }
+
 
     //Gyroscope sensors
     SensorEventListener gyroscopeSensorListener;
     Sensor gyroscopeSensor;
     SensorManager sensorManager;
 
+    private Rect sourceRect;    // the rectangle to be drawn from the animation bitmap
+    private int spriteWidth;
+    private int spriteHeight;
+
 
     public Player (Bitmap bitmapplayer)
     {
         //this.rectangle = player;
         this.bitmap = bitmapplayer;
-        this.color = color;
+        this.x = 200;
+        this.y = 200;
+        spriteWidth = bitmap.getWidth();
+        spriteHeight = bitmap.getHeight();
+        sourceRect = new Rect(0, 0, spriteWidth, spriteHeight);
+
     }
 
     @Override
     public void Draw(Canvas canvas)
     {
-        Paint paint = new Paint();
-        paint.setColor(Color.BLUE);
-        //canvas.drawRect(rectangle, paint );
-
-
-        canvas.drawBitmap(bitmap, 10, 10, paint);
-
-
+        Rect rect = new Rect(getX()- (bitmap.getWidth()/2) , getY()- (bitmap.getHeight()/2), getX() + spriteWidth/2, getY() + spriteHeight/2);
+        canvas.drawBitmap(bitmap, sourceRect , rect, null);
     }
+
+    public void handleActionDown(int eventX, int eventY)
+    {
+        //check if we are touching inside of the player bitmap
+        if (eventX >= (x - bitmap.getWidth() / 2) && (eventX <= (x + bitmap.getWidth()/2)))
+        {
+            if (eventY >= (y - bitmap.getHeight() / 2) && (y <= (y + bitmap.getHeight() / 2)))
+            {
+                //player touched
+                setTouched(true);
+            } else
+                {
+                setTouched(false);
+                }
+        } else
+            {
+                setTouched(false);
+            }
+    }
+
 
     @Override
     public void Update()
     {
-
-    }
-
-    public void Update(Point point)
-    {
-        //rectangle.set(point.x - rectangle.width()/2,point.y - rectangle.height()/2, point.x + rectangle.width()/2, point.y + rectangle.height()/2 );
 
     }
 
@@ -66,26 +115,22 @@ public class Player extends AppCompatActivity implements IDrawUpdate {
         //creates sensormanager to get gyroscope
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+
+
+
         // Create a listener
         gyroscopeSensorListener = new SensorEventListener()
-
-
         {
             @Override
-            public void onSensorChanged(SensorEvent sensorEvent) {
+            public void onSensorChanged(SensorEvent sensorEvent)
+            {
                 //asks about the z-axe
-                if(sensorEvent.values[2] > 1f) { // anticlockwise
+                if(sensorEvent.values[2] > 1f)
+                { // anticlockwise
+                    Toast.makeText(getApplicationContext(), "Left", Toast.LENGTH_SHORT).show();
 
-                    /*Matrix matrix = new Matrix();
-                    matrix.preScale(-1.0f, 1.0f);
-                    bit = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);*/
-
-                    bitmap.getPixel(300,300);
-
-                    Toast.makeText(getApplicationContext(), "Left" + bit, Toast.LENGTH_SHORT).show();
-
-                } else if(sensorEvent.values[2] < -1f) { // clockwise
-
+                } else if(sensorEvent.values[2] < -1f)
+                { // clockwise
                     Toast.makeText(getApplicationContext(), "Right", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -96,7 +141,7 @@ public class Player extends AppCompatActivity implements IDrawUpdate {
             }
         };
         // Register the listener
-        sensorManager.registerListener(gyroscopeSensorListener, gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        //sensorManager.registerListener(gyroscopeSensorListener, gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 }

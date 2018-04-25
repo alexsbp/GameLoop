@@ -6,9 +6,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.AnimationDrawable;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 /**
  * Created by Bysted on 16-04-2018.
@@ -17,24 +21,24 @@ import android.view.SurfaceView;
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 {
     private MainThread thread;
-
     public Bitmap bitmap;
 
-
     private Player player;
-    private Point playerPoint;
 
     public GamePanel (Context context )
     {
         super(context);
+        //sets the current class (GamePanel) as the handler for the events happening on the actual surface.
         getHolder().addCallback(this);
+
+        //Create the game loop thread
         thread = new MainThread(getHolder(), this);
+
+        //makes our Game Panel focusable, which means it can receive focus so it can handle events.
         setFocusable(true);
 
         //instantiates a new player
-        player = new Player( bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icontrundle)); //, new Rect(300,300,100,100)
-        //where the player should spawn, on the screen
-        playerPoint = new Point(100,100);
+        player = new Player( bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icontrundle));
 
     }
 
@@ -48,10 +52,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder)
     {
-        thread = new MainThread(getHolder(), this);
-        //make gameloop start running
+        //the surface is created and we can safely start the game loop
         thread.setRunning(true);
         thread.start();
+
+
     }
 
     @Override
@@ -77,23 +82,38 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        switch (event.getAction())
+        if (event.getAction() == MotionEvent.ACTION_DOWN)
         {
-            case MotionEvent.ACTION_DOWN:
-            case MotionEvent.ACTION_MOVE:
-                playerPoint.set((int) event.getX(),(int) event.getY());
+            //setting the player to the position where you are touching
+            player.handleActionDown((int)event.getX(), (int)event.getY());
+
         }
-
-
-        //always detect touch
+        if (event.getAction() == MotionEvent.ACTION_MOVE)
+        {
+            // the gestures
+            if (player.isTouched())
+            {
+                // the droid was picked up and is being dragged
+                player.setX((int)event.getX());
+                player.setY((int)event.getY());
+            }
+        }
+        if (event.getAction() == MotionEvent.ACTION_UP)
+        {
+            // touch was released
+            if (player.isTouched())
+            {
+                player.setTouched(false);
+            }
+        }
         return true;
-        //return super.onTouchEvent(event);
     }
+
 
     public void Update ()
     {
-        player.Update(playerPoint);
-
+        player.Update();
+        //player.SensorMethodGyroscope();
     }
 
     @Override

@@ -14,6 +14,7 @@ public class MainThread extends Thread
     //interface to someone holding a display surface. Allows you to control the surface size and format, edit the pixels in the surface, and monitor changes to the surface.
     private SurfaceHolder surfaceHolder;
     private GamePanel gamePanel;
+
     private boolean running;
     //used to draw with
     public static Canvas canvas;
@@ -46,6 +47,7 @@ public class MainThread extends Thread
             startTime = System.nanoTime();
             canvas = null;
 
+            // try locking the canvas for exclusive pixel editing on the surface
             try
             {
                 canvas = this.surfaceHolder.lockCanvas();
