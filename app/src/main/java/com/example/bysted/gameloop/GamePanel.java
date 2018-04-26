@@ -7,12 +7,19 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.AnimationDrawable;
+import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by Bysted on 16-04-2018.
@@ -24,6 +31,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public Bitmap bitmap;
 
     private Player player;
+    private Meteor meteor;
+    private ArrayList<Meteor> meteorList = new ArrayList<>();
 
     public GamePanel (Context context )
     {
@@ -38,7 +47,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         setFocusable(true);
 
         //instantiates a new player
-        player = new Player( bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icontrundle));
+        player = new Player( bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.spaceship));
+        meteorList.add(new Meteor(bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.meteor), 300, -20));
+        meteorList.add(new Meteor(bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.meteor), 400, -20));
+        meteorList.add(new Meteor(bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.meteor), 500, -20));
+       // meteorList.add(new Meteor(bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.meteor), 300, 200));
 
     }
 
@@ -113,7 +126,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public void Update ()
     {
         player.Update();
-        //player.SensorMethodGyroscope();
+
+        for (Meteor item : meteorList)
+        {
+            item.Update();
+        }
     }
 
     @Override
@@ -123,5 +140,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         //fills the whole canvas(screen) with the color you specify
         canvas.drawColor(Color.WHITE);
         player.Draw(canvas);
+
+        for (Meteor item : meteorList)
+        {
+            item.Draw(canvas);
+        }
     }
 }

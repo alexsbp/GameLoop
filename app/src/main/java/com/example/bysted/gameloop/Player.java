@@ -68,8 +68,8 @@ public class Player extends AppCompatActivity implements IDrawUpdate {
     {
         //this.rectangle = player;
         this.bitmap = bitmapplayer;
-        this.x = 200;
-        this.y = 200;
+        this.x = 500;
+        this.y = 500;
         spriteWidth = bitmap.getWidth();
         spriteHeight = bitmap.getHeight();
         sourceRect = new Rect(0, 0, spriteWidth, spriteHeight);
@@ -141,7 +141,7 @@ public class Player extends AppCompatActivity implements IDrawUpdate {
             }
         };
         // Register the listener
-        //sensorManager.registerListener(gyroscopeSensorListener, gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(gyroscopeSensorListener, gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 }

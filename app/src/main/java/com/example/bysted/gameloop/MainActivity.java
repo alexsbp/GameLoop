@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 public class MainActivity extends AppCompatActivity {
 
 
-    AnimationDrawable rocketAnimation;
 
 
     @Override
@@ -23,18 +22,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-    }
-
-    public void StartAnimation(View v)
-    {
-        ImageView rocketImage = (ImageView) findViewById(R.id.MyImgView);
-        rocketImage.setBackgroundResource(R.drawable.rocket_thrust);
-        rocketAnimation = (AnimationDrawable) rocketImage.getBackground();
-        rocketAnimation.start();
-    }
-    public void StopAnimation(View v)
-    {
-        rocketAnimation.stop();
     }
 
     public void StartGame(View v)
