@@ -2,8 +2,12 @@ package com.example.bysted.gameloop;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
+
+import java.util.Random;
 
 /**
  * Created by Alex on 26-04-2018.
@@ -41,6 +45,12 @@ public class Meteor extends AppCompatActivity implements IDrawUpdate
         this.spriteHeight = bitmap.getHeight();
         sourceRect = new Rect(0, 0, spriteWidth, spriteHeight);
 
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+
     }
 
     @Override
@@ -53,9 +63,11 @@ public class Meteor extends AppCompatActivity implements IDrawUpdate
     @Override
     public void Update()
     {
+        Random rand = new Random();
         if (y >= 700)
         {
-            
+            y = -50;
+            x = rand.nextInt(500);
         }
         y += 20;
     }
